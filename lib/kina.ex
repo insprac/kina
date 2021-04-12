@@ -1,18 +1,10 @@
 defmodule Kina do
-  @moduledoc """
-  Documentation for `Kina`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Kina.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  @type type ::
+          :integer
+          | :float
+          | :string
+          | :boolean
+          | {:map, type()}
+          | {:list, type()}
+          | atom
 end
