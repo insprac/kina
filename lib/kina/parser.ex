@@ -26,8 +26,10 @@ defmodule Kina.Parser do
   @spec parse_schema(any, atom) :: struct
   def parse_schema(value, module) do
     module.__fields__()
-    |> Enum.reduce(struct(module), fn {name, type, _opts}, schema ->
+    |> Enum.reduce(struct(module), fn {name, type, opts}, schema ->
       sub_value = Map.get(value, name) || Map.get(value, "#{name}")
+      key = Keyword.get(opts, :key, name)
+      sub_value = Map.get(value, key) || Map.get(value, "#{key}")
       Map.put(schema, name, parse(sub_value, type))
     end)
   end
