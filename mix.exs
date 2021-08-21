@@ -4,9 +4,10 @@ defmodule Kina.MixProject do
   def project do
     [
       app: :kina,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
+      deps: deps(),
       package: package(),
       description: description(),
       name: "Kina",
@@ -30,6 +31,12 @@ defmodule Kina.MixProject do
       files: ["lib", "mix.exs", "README.md", "LICENSE"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/insprac/kina"}
+    ]
+  end
+
+  def deps do
+    [
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 end

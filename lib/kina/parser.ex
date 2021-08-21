@@ -2,6 +2,7 @@ defmodule Kina.Parser do
   @spec parse(any, Kina.type()) :: any
   def parse(nil, _type), do: nil
 
+  def parse(value, :any), do: value
   def parse(value, :integer) when is_integer(value), do: value
   def parse(value, :float) when is_float(value), do: value
   def parse(value, :float) when is_integer(value), do: value / 1
@@ -31,13 +32,17 @@ defmodule Kina.Parser do
   end
 
   @spec parse_schema(any, atom) :: struct
-  def parse_schema(value, module) do
+  def parse_schema(value, module) when is_map(value) do
     module.__fields__()
     |> Enum.reduce(struct(module), fn {name, type, opts}, schema ->
       key = Keyword.get(opts, :key, name)
       sub_value = Map.get(value, key) || Map.get(value, "#{key}")
       Map.put(schema, name, parse(sub_value, type))
     end)
+  end
+
+  def parse_schema(value, module) do
+    error(value, module)
   end
 
   defp error(value, type) do
