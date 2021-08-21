@@ -23,12 +23,20 @@ defmodule Kina.Parser do
     Enum.map(value, &parse(&1, sub_type))
   end
 
-  def parse(value, type) do
-    cond do
-      not is_atom(type) -> error(value, type)
-      Kina.Schema.kina_schema?(type) -> parse_schema(value, type)
-      true -> error(value, type)
+  def parse(value, type) when is_atom(type) do
+    try do
+      struct(type)
     end
+
+    if Kina.Schema.kina_schema?(type) do
+      parse_schema(value, type)
+    else
+      error(value, type)
+    end
+  end
+
+  def parse(value, type) do
+    error(value, type)
   end
 
   @spec parse_schema(any, atom) :: struct
