@@ -26,6 +26,8 @@ defmodule Kina.Parser do
   def parse(value, type) when is_atom(type) do
     try do
       struct(type)
+    catch
+      _ -> nil
     end
 
     if Kina.Schema.kina_schema?(type) do
