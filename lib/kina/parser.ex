@@ -10,6 +10,10 @@ defmodule Kina.Parser do
   def parse(value, :boolean) when is_boolean(value), do: value
   def parse(value, :map) when is_map(value), do: value
   def parse(value, :list) when is_list(value), do: value
+  def parse(value, :date) when is_binary(value), do: Date.from_iso8601!(value)
+
+  def parse(value, :naive_datetime) when is_binary(value),
+    do: NaiveDateTime.from_iso8601!(value)
 
   def parse(value, {:map, sub_type}) when is_map(value) do
     value
