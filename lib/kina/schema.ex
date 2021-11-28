@@ -14,7 +14,9 @@ defmodule Kina.Schema do
 
       unquote(block)
 
-      defstruct Enum.map(@fields, &elem(&1, 0))
+      defstruct Enum.map(@fields, fn {name, _type, opts} ->
+                  {name, Keyword.get(opts, :default)}
+                end)
 
       @spec __kina_schema__() :: true
       def __kina_schema__, do: true
